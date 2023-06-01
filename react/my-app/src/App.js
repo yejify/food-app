@@ -24,8 +24,6 @@ function App() {
     <button id="addBtn" onClick={onSend}>추가하기</button>
   }
 
-  //혹시 변경사항이 저장이 안되는건가..?
-
   const bucketLi = bucketList.map((i, index)=>(<li key={index+1} id={index+1}><h2>{i}</h2><button onClick={()=> {
     setBucketList(bucketList.filter(item => item !== i))
   }}>삭제</button></li>));
