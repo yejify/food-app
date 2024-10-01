@@ -1,8 +1,9 @@
+import Layout from '@/component/Layout';
 import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div>
+    <Layout>
       <h1>Map Index Page</h1>
       <ul>
         <li>
@@ -21,12 +22,12 @@ export default function Home() {
           <Link href='/users/login'>로그인 페이지</Link>
         </li>
         <li>
-          <Link href='/users/my'>마이 페이지</Link>
+          <Link href='/users/mypage'>마이페이지</Link>
         </li>
         <li>
           <Link href='/users/likes'>찜한 맛집</Link>
         </li>
       </ul>
-    </div>
+    </Layout>
   );
 }
