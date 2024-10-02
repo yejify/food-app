@@ -24,6 +24,7 @@ export default function Map({ setMap }: MapProps) {
         level: 3,
       };
       const map = new window.kakao.maps.Map(mapContainer, mapOption);
+      setMap(map);
     });
   };
   return (
