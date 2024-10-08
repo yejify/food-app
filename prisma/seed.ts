@@ -4,7 +4,7 @@ import * as data from '../src/data/store_data.json';
 const prisma = new PrismaClient();
 
 async function seedData() {
-  for (const store of data?.['DATA'] || []) {
+  data?.['DATA']?.map(async (store) => {
     const storeData = {
       phone: store?.tel_no,
       address: store?.rdn_code_nm,
@@ -16,20 +16,11 @@ async function seedData() {
       foodCertifyName: store?.crtfc_gbn_nm,
     };
 
-    // 1. 중복된 address가 있는지 확인 후 삭제
-    await prisma.store.deleteMany({
-      where: {
-        address: storeData.address,
-      },
-    });
-
-    // 2. 새로운 데이터 추가
     const res = await prisma.store.create({
       data: storeData,
     });
-
-    console.log(`Added store with name: ${storeData.name}`);
-  }
+    console.log(res);
+  });
 }
 
 async function main() {
