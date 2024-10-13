@@ -19,6 +19,9 @@ export const authOptions = {
       clientSecret: process.env.NAVER_CLIENT_SECRET || '',
     }),
   ],
+  pages: {
+    signIn: '/users/login',
+  },
 };
 
 export default NextAuth(authOptions);

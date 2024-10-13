@@ -12,7 +12,7 @@ export default function Navbar() {
     <>
       <div className='navbar'>
         <Link className='navbar__logo' href='/'>
-          nextmap
+          Food-App
         </Link>
         <div className='navbar__list'>
           <Link href='/stores' className='navbar__list--item'>
