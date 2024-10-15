@@ -24,6 +24,7 @@ export default function StoreListPage() {
     isSuccess,
   } = useQuery(`store-${id}`, fetchStore, {
     enabled: !!id,
+    refetchOnWindowFocus: false,
   });
 
   if (isError) {
