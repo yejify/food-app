@@ -3,8 +3,12 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { StoreType } from '@/interface';
 import Loader from '@/components/Loader';
+import Map from '@/components/Map';
+import { useState } from 'react';
+import Marker from '@/components/Marker';
 
 export default function StoreListPage() {
+  const [map, setMap] = useState(null);
   const router = useRouter();
   const { id } = router.query;
 
@@ -17,6 +21,7 @@ export default function StoreListPage() {
     data: store,
     isFetching,
     isError,
+    isSuccess,
   } = useQuery(`store-${id}`, fetchStore, {
     enabled: !!id,
   });
@@ -105,6 +110,12 @@ export default function StoreListPage() {
           </dl>
         </div>
       </div>
+      {isSuccess && (
+        <div className='overflow-hidden w-full mb-20 max-w-5xl mx-auto max-h-[600px]'>
+          <Map setMap={setMap} lat={store?.lat} lng={store?.lng} zoom={1} />
+          <Marker map={map} store={store} />
+        </div>
+      )}
     </>
   );
 }
