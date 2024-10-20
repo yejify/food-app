@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import axios from 'axios';
 
@@ -18,10 +19,14 @@ export default function StoreNew() {
           try {
             const res = await axios.post('/api/stores', data);
             if (res.status === 200) {
+              toast.success('맛집을 등록했습니다.');
               router.replace('/stores');
+            } else {
+              toast.error('다시 시도해주세요');
             }
           } catch (e) {
             console.log(e);
+            toast.error('데이터 생성중 문제가 생겼습니다. 다시 시도해주세요');
           }
         })}
       >
