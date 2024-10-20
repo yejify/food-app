@@ -1,18 +1,30 @@
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
+import axios from 'axios';
 
 export default function StoreNew() {
   const router = useRouter();
   const {
     register,
+    handleSubmit,
     formState: { errors },
   } = useForm();
 
   return (
     <div className='px-4 md:max-w-4xl mx-auto py-8'>
-      <form>
+      <form
+        onSubmit={handleSubmit(async (data) => {
+          try {
+            const res = await axios.post('/api/stores', data);
+            if (res.status === 200) {
+              router.replace('/stores');
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        })}
+      >
         <div className='space-y-12'>
           <div className='border-b border-gray-900/10 pb-12'>
             <h2 className='text-base font-semibold leading-7 text-gray-900'>
