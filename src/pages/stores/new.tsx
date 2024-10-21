@@ -119,46 +119,6 @@ export default function StoreNew() {
 
               <div className='sm:col-span-2 sm:col-start-1'>
                 <label
-                  htmlFor='lat'
-                  className='block text-sm font-medium leading-6 text-gray-900'
-                >
-                  위도
-                </label>
-                <div className='mt-2'>
-                  <input
-                    {...register('lat', { required: true })}
-                    className='block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'
-                  />
-                  {errors?.lat?.type === 'required' && (
-                    <div className='pt-2 text-xs text-red-600'>
-                      필수 입력사항입니다.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className='sm:col-span-2'>
-                <label
-                  htmlFor='lng'
-                  className='block text-sm font-medium leading-6 text-gray-900'
-                >
-                  경도
-                </label>
-                <div className='mt-2'>
-                  <input
-                    {...register('lng', { required: true })}
-                    className='block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'
-                  />
-                  {errors?.lng?.type === 'required' && (
-                    <div className='pt-2 text-xs text-red-600'>
-                      필수 입력사항입니다.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className='sm:col-span-2 sm:col-start-1'>
-                <label
                   htmlFor='foodCertifyName'
                   className='block text-sm font-medium leading-6 text-gray-900'
                 >
