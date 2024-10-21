@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import axios from 'axios';
+import { StoreType } from '@/interface';
+import AddressSearch from '@/components/AddressSearch';
 
 export default function StoreNew() {
   const router = useRouter();
@@ -10,7 +12,8 @@ export default function StoreNew() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    setValue,
+  } = useForm<StoreType>();
 
   return (
     <div className='px-4 md:max-w-4xl mx-auto py-8'>
@@ -108,25 +111,11 @@ export default function StoreNew() {
                 </div>
               </div>
 
-              <div className='col-span-full'>
-                <label
-                  htmlFor='address'
-                  className='block text-sm font-medium leading-6 text-gray-900'
-                >
-                  주소
-                </label>
-                <div className='mt-2'>
-                  <input
-                    {...register('address', { required: true })}
-                    className='block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'
-                  />
-                  {errors?.address?.type === 'required' && (
-                    <div className='pt-2 text-xs text-red-600'>
-                      필수 입력사항입니다.
-                    </div>
-                  )}
-                </div>
-              </div>
+              <AddressSearch
+                setValue={setValue}
+                register={register}
+                errors={errors}
+              />
 
               <div className='sm:col-span-2 sm:col-start-1'>
                 <label
