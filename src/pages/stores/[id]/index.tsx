@@ -8,11 +8,12 @@ import { useState } from 'react';
 import Marker from '@/components/Marker';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
 
 export default function StoreListPage() {
-  const [map, setMap] = useState(null);
   const router = useRouter();
   const { id } = router.query;
+  const { status } = useSession();
 
   const fetchStore = async () => {
     const { data } = await axios(`/api/stores?id=${id}`);
