@@ -27,3 +27,9 @@ export interface SearchType {
   q?: string;
   district?: string;
 }
+
+export interface LikeInterface {
+  id: number;
+  storeId: number;
+  userId: number;
+}
