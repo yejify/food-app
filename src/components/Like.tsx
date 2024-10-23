@@ -11,7 +11,7 @@ interface LikeProps {
 }
 
 export default function Like({ storeId, className }: LikeProps) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const config = {
     url: `/api/stores?id=${storeId}`,
@@ -46,11 +46,14 @@ export default function Like({ storeId, className }: LikeProps) {
       } catch (e) {
         console.log(e);
       }
+    } else if (status === 'unauthenticated') {
+      toast.warn('로그인 후 이용해주세요.');
     }
   };
+
   return (
     <button type='button' onClick={toggleLike} className={className}>
-      {store?.likes && store?.likes?.length > 0 ? (
+      {status === 'authenticated' && store?.likes?.length ? (
         <AiFillHeart className='hover:text-red-600 focus:text-red-600 text-red-500' />
       ) : (
         <AiOutlineHeart className='hover:text-red-600 focus:text-red-600' />
