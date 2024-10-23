@@ -9,6 +9,7 @@ import Marker from '@/components/Marker';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
+import Like from '@/components/Like';
 
 export default function StoreListPage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function StoreListPage() {
     isFetching,
     isError,
     isSuccess,
-  } = useQuery(`store-${id}`, fetchStore, {
+  } = useQuery<StoreType>(`store-${id}`, fetchStore, {
     enabled: !!id,
     refetchOnWindowFocus: false,
   });
@@ -75,6 +76,7 @@ export default function StoreListPage() {
           </div>
           {status === 'authenticated' && (
             <div className='flex items-center gap-4 px-4 py-3'>
+              {store && <Like storeId={store.id} />}
               <Link
                 className='underline hover:text-gray-400 text-sm'
                 href={`/stores/${store?.id}/edit`}
