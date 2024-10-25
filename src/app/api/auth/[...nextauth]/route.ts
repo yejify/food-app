@@ -42,10 +42,11 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.sub = user.id;
       }
-
       return token;
     },
   },
 };
 
-export default NextAuth(authOptions);
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
