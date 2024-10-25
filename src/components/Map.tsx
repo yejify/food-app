@@ -1,5 +1,7 @@
+'use client';
+
 import Script from 'next/script';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { locationState, mapState } from '@/atom';
 
 declare global {
@@ -17,6 +19,7 @@ interface MapProps {
 export default function Map({ lat, lng, zoom }: MapProps) {
   const setMap = useSetRecoilState(mapState);
   const location = useRecoilValue(locationState);
+
   const loadKakaoMap = () => {
     window.kakao.maps.load(() => {
       const mapContainer = document.getElementById('map');
@@ -28,6 +31,7 @@ export default function Map({ lat, lng, zoom }: MapProps) {
         level: zoom ?? location.zoom,
       };
       const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
       setMap(map);
     });
   };
