@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { StoreType } from '@/interface';
 import Loader from '@/components/Loader';
@@ -29,7 +29,9 @@ export default function StorePage({ params }: { params: { id: string } }) {
     isFetching,
     isSuccess,
     isError,
-  } = useQuery<StoreType>(`store-${id}`, fetchStore, {
+  } = useQuery({
+    queryKey: ['store', id],
+    queryFn: fetchStore,
     enabled: !!id,
     refetchOnWindowFocus: false,
   });

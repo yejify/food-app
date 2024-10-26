@@ -5,7 +5,7 @@ import { CommentApiResponse } from '@/interface';
 import axios from 'axios';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export default function MyPage() {
   const router = useRouter();
@@ -19,10 +19,10 @@ export default function MyPage() {
     return data as CommentApiResponse;
   };
 
-  const { data: comments, refetch } = useQuery(
-    `comments-${page}`,
-    fetchComments
-  );
+  const { data: comments, refetch } = useQuery({
+    queryKey: [`comments-${page}`],
+    queryFn: fetchComments,
+  });
 
   const { data: session } = useSession();
   return (

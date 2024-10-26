@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useSession } from 'next-auth/react';
 import CommentForm from './CommentForm';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { CommentApiResponse } from '@/interface';
 import CommentList from './CommentList';
@@ -26,10 +26,10 @@ export default function Comments({ storeId, params }: CommentProps) {
     return data as CommentApiResponse;
   };
 
-  const { data: comments, refetch } = useQuery(
-    `comments-${storeId}-${page}`,
-    fetchComments
-  );
+  const { data: comments, refetch } = useQuery({
+    queryKey: [`comments-${storeId}-${page}`],
+    queryFn: fetchComments,
+  });
 
   return (
     <div className='md:max-w-2xl py-8 px-2 mb-20 mx-auto'>

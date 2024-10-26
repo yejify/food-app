@@ -2,7 +2,7 @@ import { StoreType } from '@/interface';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 interface LikeProps {
@@ -17,17 +17,15 @@ export default function Like({ storeId, className }: LikeProps) {
     url: `/api/stores?id=${storeId}`,
   };
 
-  const { data: store, refetch } = useQuery<StoreType>(
-    [`like-store-${storeId}`],
-    async () => {
+  const { data: store, refetch } = useQuery<StoreType>({
+    queryKey: [`like-store-${storeId}`],
+    queryFn: async () => {
       const { data } = await axios(config);
       return data as StoreType;
     },
-    {
-      refetchOnWindowFocus: false,
-      enabled: !!storeId,
-    }
-  );
+    refetchOnWindowFocus: false,
+    enabled: !!storeId,
+  });
 
   const toggleLike = async () => {
     if (session?.user && store) {

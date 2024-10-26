@@ -2,7 +2,7 @@ import Loading from '@/components/Loading';
 import StoreList from '@/components/StoreList';
 import { LikeApiResponse, LikeInterface } from '@/interface';
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import Pagination from '@/components/Pagination';
 
@@ -19,7 +19,10 @@ export default function LikesPage() {
     data: likes,
     isError,
     isLoading,
-  } = useQuery(`likes-${page}`, fetchLikes);
+  } = useQuery({
+    queryKey: [`likes-${page}`],
+    queryFn: fetchLikes,
+  });
 
   if (isError) {
     return (
