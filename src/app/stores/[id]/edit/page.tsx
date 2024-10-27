@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import AddressSearch from '@/components/AddressSearch';
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import { StoreType } from '@/interface';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 export default function StoreEditPage() {
@@ -28,20 +29,26 @@ export default function StoreEditPage() {
     isFetching,
     isSuccess,
     isError,
-  } = useQuery(`store-${id}`, fetchStore, {
-    onSuccess: (data) => {
-      setValue('id', data.id);
-      setValue('name', data.name);
-      setValue('phone', data.phone);
-      setValue('lat', data.lat);
-      setValue('lng', data.lng);
-      setValue('address', data.address);
-      setValue('foodCertifyName', data.foodCertifyName);
-      setValue('storeType', data.storeType);
-      setValue('category', data.category);
-    },
+  } = useQuery({
+    queryKey: [`store-${id}`],
+    queryFn: fetchStore,
     refetchOnWindowFocus: false,
   });
+
+  // useEffect를 사용해 데이터가 성공적으로 로드되면 폼 값을 설정합니다.
+  useEffect(() => {
+    if (store) {
+      setValue('id', store.id);
+      setValue('name', store.name);
+      setValue('phone', store.phone);
+      setValue('lat', store.lat);
+      setValue('lng', store.lng);
+      setValue('address', store.address);
+      setValue('foodCertifyName', store.foodCertifyName);
+      setValue('storeType', store.storeType);
+      setValue('category', store.category);
+    }
+  }, [store, setValue]);
 
   return (
     <form
@@ -50,11 +57,9 @@ export default function StoreEditPage() {
         try {
           const result = await axios.put('/api/stores', data);
           if (result.status === 200) {
-            // 성공 케이스
             toast.success('맛집을 수정했습니다.');
             router.replace(`/stores/${result?.data?.id}`);
           } else {
-            // 실패 케이스
             toast.error('다시 시도해주세요');
           }
         } catch (e) {

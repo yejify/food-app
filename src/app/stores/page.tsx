@@ -1,9 +1,7 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 
-import Image from 'next/image';
 import { StoreType } from '@/interface';
-
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import axios from 'axios';
 import Loading from '@/components/Loading';
@@ -47,11 +45,13 @@ export default function StoreListPage() {
     hasNextPage,
     isError,
     isLoading,
-  } = useInfiniteQuery(['stores', searchParams], fetchStores, {
-    getNextPageParam: (lastPage: any) =>
-      lastPage.data?.length > 0 ? lastPage.page + 1 : undefined,
+  } = useInfiniteQuery({
+    queryKey: ['stores', searchParams], // 쿼리 키 정의
+    queryFn: ({ pageParam = 1 }) => fetchStores({ pageParam }), // 데이터 fetching 함수
+    getNextPageParam: (lastPage) =>
+      lastPage.data?.length > 0 ? lastPage.page + 1 : undefined, // 다음 페이지 계산
+    initialPageParam: 1, // 초기 페이지 설정
   });
-
   const fetchNext = useCallback(async () => {
     const res = await fetchNextPage();
     if (res.isError) {
