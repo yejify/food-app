@@ -27,8 +27,8 @@ model Store {
   category        String?
   storeType       String?
   foodCertifyName String?
-  lat             Int?
-  lng             Int?
+  lat             Float?
+  lng             Float?
   comments        Comment[]
   likes           Like[]
 }
