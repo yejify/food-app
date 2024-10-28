@@ -2,8 +2,8 @@ export interface StoreType {
   id: number;
   phone?: string | null;
   address?: string | null;
-  lat?: number;
-  lng?: number;
+  lat?: number | null;
+  lng?: number | null;
   name?: string | null;
   category?: string | null;
   storeType?: string | null;
