@@ -8,7 +8,7 @@ import {
   AiOutlinePhone,
 } from 'react-icons/ai';
 import { HiOutlineMapPin } from 'react-icons/hi2';
-import { useRouter } from 'next/compat/router';
+import { useRouter } from 'next/navigation';
 import Like from './Like';
 import { useCurrentStore } from '@/zustand_store/store';
 

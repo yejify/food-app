@@ -5,12 +5,12 @@ import StoreList from '@/components/StoreList';
 import { LikeApiResponse, LikeInterface } from '@/interface';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import Pagination from '@/components/Pagination';
 
 export default function LikesPage() {
-  const router = useRouter();
-  const { page = '1' }: any = router.query;
+  const searchParams = useSearchParams();
+  const page = searchParams?.get('page') || '1';
 
   const fetchLikes = async () => {
     const { data } = await axios(`/api/likes?limit=10&page=${page}`);

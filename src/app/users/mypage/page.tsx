@@ -6,18 +6,17 @@ import CommentList from '@/components/comments/CommentList';
 import { CommentApiResponse } from '@/interface';
 import axios from 'axios';
 import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 
 export default function MyPage() {
-  const router = useRouter();
-  const { page = '1' }: any = router.query;
+  const searchParams = useSearchParams();
+  const page = searchParams?.get('page') || '1';
 
   const fetchComments = async () => {
     const { data } = await axios(
-      `/api/comments?&limit=5&page=${page}&user=${true}`
+      `/api/comments?limit=5&page=${page}&user=true`
     );
-
     return data as CommentApiResponse;
   };
 
@@ -27,6 +26,7 @@ export default function MyPage() {
   });
 
   const { data: session } = useSession();
+
   return (
     <div className='md:max-w-5xl mx-auto px-4 py-8'>
       <div className='px-4 sm:px-0'>

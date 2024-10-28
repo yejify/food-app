@@ -5,14 +5,15 @@ import AddressSearch from '@/components/AddressSearch';
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import { StoreType } from '@/interface';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 export default function StoreEditPage() {
   const router = useRouter();
-  const { id } = router.query;
+  const searchParams = useSearchParams();
+  const id = searchParams?.get('id');
 
   const fetchStore = async () => {
     const { data } = await axios(`/api/stores?id=${id}`);
