@@ -9,21 +9,22 @@ import {
 import { useEffect, useCallback } from 'react';
 
 interface MarkerProps {
-  stores: StoreType[];
+  stores?: StoreType[]; // stores가 undefined일 수 있으므로 ? 추가
+  isLoading: boolean; // 로딩 상태를 prop으로 전달
 }
 
-export default function Markers({ stores }: MarkerProps) {
+export default function Markers({ stores, isLoading }: MarkerProps) {
   const map = useMapStore((state) => state.map);
   const setCurrentStore = useCurrentStore((state) => state.setCurrentStore);
   const setLocation = useLocationStore((state) => state.setLocation);
 
   const loadKakaoMarkers = useCallback(() => {
-    if (!map) return; // 지도 객체가 초기화되지 않으면 종료
+    if (!map || !stores || stores.length === 0) return; // 지도나 데이터가 없으면 종료
 
     stores.forEach((store) => {
       if (store.lat == null || store.lng == null) {
         console.warn(`Invalid coordinates for store: ${store.name}`);
-        return; // 유효하지 않은 좌표를 가진 스토어는 무시
+        return; // 유효하지 않은 좌표 무시
       }
 
       const imageSrc = store.category
@@ -49,7 +50,7 @@ export default function Markers({ stores }: MarkerProps) {
       const content = `<div class="infowindow">${store.name}</div>`;
       const customOverlay = new window.kakao.maps.CustomOverlay({
         position: markerPosition,
-        content: content,
+        content,
         xAnchor: 0.6,
         yAnchor: 0.91,
       });
@@ -70,8 +71,10 @@ export default function Markers({ stores }: MarkerProps) {
   }, [map, stores, setCurrentStore, setLocation]);
 
   useEffect(() => {
-    loadKakaoMarkers(); // 마커 로드
-  }, [loadKakaoMarkers]);
+    if (!isLoading) {
+      loadKakaoMarkers(); // 로딩이 끝나면 마커를 로드
+    }
+  }, [loadKakaoMarkers, isLoading]);
 
   return null;
 }

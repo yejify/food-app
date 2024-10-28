@@ -11,14 +11,14 @@ export default async function Home() {
   return (
     <>
       <Map />
-      <Markers stores={stores} />
+      <Markers stores={stores} isLoading={false} />
       <StoreBox />
       <CurrentLocationButton />
     </>
   );
 }
 
-async function getData() {
+async function getData(): Promise<StoreType[]> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`, {
       cache: 'no-store',
@@ -28,8 +28,9 @@ async function getData() {
       throw new Error('Failed to fetch data');
     }
 
-    return res.json();
-  } catch (e) {
-    console.log(e);
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return []; // 에러 시 빈 배열 반환
   }
 }
