@@ -2,8 +2,8 @@ export interface StoreType {
   id: number;
   phone?: string | null;
   address?: string | null;
-  lat?: string | null;
-  lng?: string | null;
+  lat?: number;
+  lng?: number;
   name?: string | null;
   category?: string | null;
   storeType?: string | null;
@@ -55,8 +55,8 @@ export interface StoreApiResponse {
 }
 
 export interface LocationType {
-  lat?: string | null;
-  lng?: string | null;
+  lat?: number;
+  lng?: number;
   zoom?: number;
 }
 
