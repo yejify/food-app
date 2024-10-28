@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable @next/next/no-img-element */
 import Pagination from '@/components/Pagination';
 import CommentList from '@/components/comments/CommentList';

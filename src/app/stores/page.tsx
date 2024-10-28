@@ -1,28 +1,28 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+'use client';
 
+import React, { useRef, useEffect, useCallback } from 'react';
 import { StoreType } from '@/interface';
 import { useInfiniteQuery } from '@tanstack/react-query';
-
 import axios from 'axios';
-import Loading from '@/components/Loading';
 
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import Loading from '@/components/Loading';
 import Loader from '@/components/Loader';
 import SearchFilter from '@/components/SearchFilter';
-
-import { useRecoilValue } from 'recoil';
-import { searchState } from '@/atom';
 import StoreList from '@/components/StoreList';
+
+import { useSearchStore } from '@/zustand_store/store';
 
 export default function StoreListPage() {
   const ref = useRef<HTMLDivElement | null>(null);
   const pageRef = useIntersectionObserver(ref, {});
   const isPageEnd = !!pageRef?.isIntersecting;
-  const searchValue = useRecoilValue(searchState);
+
+  const { q, district } = useSearchStore();
 
   const searchParams = {
-    q: searchValue?.q,
-    district: searchValue?.district,
+    q,
+    district,
   };
 
   const fetchStores = async ({ pageParam = 1 }) => {
@@ -52,10 +52,11 @@ export default function StoreListPage() {
       lastPage.data?.length > 0 ? lastPage.page + 1 : undefined, // 다음 페이지 계산
     initialPageParam: 1, // 초기 페이지 설정
   });
+
   const fetchNext = useCallback(async () => {
     const res = await fetchNextPage();
     if (res.isError) {
-      console.log(res.error);
+      console.error(res.error);
     }
   }, [fetchNextPage]);
 

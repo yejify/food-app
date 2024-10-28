@@ -1,3 +1,5 @@
+'use client';
+
 import Loading from '@/components/Loading';
 import StoreList from '@/components/StoreList';
 import { LikeApiResponse, LikeInterface } from '@/interface';

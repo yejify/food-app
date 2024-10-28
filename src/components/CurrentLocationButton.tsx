@@ -1,20 +1,17 @@
 'use client';
 
-import { mapState } from '@/atom';
 import { useState } from 'react';
 import { MdOutlineMyLocation } from 'react-icons/md';
-import { useRecoilValue } from 'recoil';
-import { toast } from 'react-toastify';
 import FullPageLoader from './FullPageLoader';
+import { useMapStore } from '@/zustand_store/store';
+import { toast } from 'react-toastify';
 
 export default function CurrentLocationButton() {
   const [loading, setLoading] = useState<boolean>(false);
-  const map = useRecoilValue(mapState);
+  const map = useMapStore((state) => state.map);
 
   const handleCurrentPosition = () => {
     setLoading(true);
-
-    // geolocation으로 현재위치 가져오기
 
     const options = {
       enableHighAccuracy: false,
@@ -31,12 +28,13 @@ export default function CurrentLocationButton() {
           );
 
           if (currentPosition) {
-            setLoading(false);
             map.panTo(currentPosition);
             toast.success('현재 위치로 이동되었습니다.');
+          } else {
+            toast.error('위치 정보를 불러오지 못했습니다.');
           }
 
-          return currentPosition;
+          setLoading(false);
         },
         () => {
           toast.error('현재 위치를 가져올 수 없습니다.');
@@ -44,6 +42,9 @@ export default function CurrentLocationButton() {
         },
         options
       );
+    } else {
+      toast.error('지도 정보가 없습니다.');
+      setLoading(false);
     }
   };
 

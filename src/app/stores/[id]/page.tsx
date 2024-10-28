@@ -1,5 +1,3 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
