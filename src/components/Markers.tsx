@@ -21,6 +21,9 @@ export default function Markers({ stores }: MarkerProps) {
     if (!map) return;
 
     stores.forEach((store) => {
+      // console.log('Store Data:', store); // 스토어 데이터 출력
+      // console.log('Coordinates:', store.lat, store.lng); // 좌표값 확인
+
       const imageSrc = store.category
         ? `/images/markers/${store.category}.png`
         : `/images/markers/default.png`;
