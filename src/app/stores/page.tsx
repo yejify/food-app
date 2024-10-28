@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic'; // 페이지를 동적 렌더링하도록 설정
+
 import React, { useRef, useEffect, useCallback } from 'react';
 import { StoreType } from '@/interface';
 import { useInfiniteQuery } from '@tanstack/react-query';
