@@ -18,11 +18,13 @@ export default function Markers({ stores }: MarkerProps) {
   const setLocation = useLocationStore((state) => state.setLocation);
 
   const loadKakaoMarkers = useCallback(() => {
-    if (!map) return;
+    if (!map) return; // 지도 객체가 초기화되지 않으면 종료
 
     stores.forEach((store) => {
-      // console.log('Store Data:', store); // 스토어 데이터 출력
-      // console.log('Coordinates:', store.lat, store.lng); // 좌표값 확인
+      if (store.lat == null || store.lng == null) {
+        console.warn(`Invalid coordinates for store: ${store.name}`);
+        return; // 유효하지 않은 좌표를 가진 스토어는 무시
+      }
 
       const imageSrc = store.category
         ? `/images/markers/${store.category}.png`
@@ -36,11 +38,7 @@ export default function Markers({ stores }: MarkerProps) {
         imageOption
       );
 
-      const markerPosition = new window.kakao.maps.LatLng(
-        store.lat ?? 0, // 기본값 설정
-        store.lng ?? 0 // 기본값 설정
-      );
-
+      const markerPosition = new window.kakao.maps.LatLng(store.lat, store.lng);
       const marker = new window.kakao.maps.Marker({
         position: markerPosition,
         image: markerImage,
@@ -66,17 +64,13 @@ export default function Markers({ stores }: MarkerProps) {
 
       window.kakao.maps.event.addListener(marker, 'click', () => {
         setCurrentStore(store);
-
-        // lat, lng가 undefined일 수 있으므로 기본값 사용
-        const lat = store.lat ?? 37.497625203; // 기본값 설정
-        const lng = store.lng ?? 127.03088379; // 기본값 설정
-        setLocation(lat, lng);
+        setLocation(store.lat ?? 37.497625203, store.lng ?? 127.03088379);
       });
     });
   }, [map, stores, setCurrentStore, setLocation]);
 
   useEffect(() => {
-    loadKakaoMarkers();
+    loadKakaoMarkers(); // 마커 로드
   }, [loadKakaoMarkers]);
 
   return null;
