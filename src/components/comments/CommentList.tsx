@@ -8,11 +8,13 @@ import Link from 'next/link';
 interface CommentListProps {
   comments?: CommentApiResponse;
   displayStore?: boolean;
+  refetch: () => void; // refetch 함수 받기
 }
 
 export default function CommentList({
   comments,
   displayStore,
+  refetch,
 }: CommentListProps) {
   const { data: session } = useSession();
 
@@ -25,26 +27,28 @@ export default function CommentList({
 
         if (result.status === 200) {
           toast.success('댓글을 삭제했습니다.');
+          refetch(); // 삭제 후 목록 갱신
         } else {
           toast.error('다시 시도해주세요.');
         }
       } catch (e) {
         console.log(e);
+        toast.error('오류가 발생했습니다. 다시 시도해주세요.');
       }
     }
   };
 
   return (
     <div className='my-10'>
-      {comments?.data && comments?.data?.length > 0 ? (
-        comments?.data?.map((comment) => (
+      {comments?.data && comments.data.length > 0 ? (
+        comments.data.map((comment) => (
           <div
             key={comment.id}
             className='flex items-center space-x-4 text-sm text-gray-500 mb-8 border-b border-gray-100 pb-8'
           >
             <div>
               <img
-                src={comment?.user?.image || '/images/markers/default.png'}
+                src={comment.user?.image || '/images/markers/default.png'}
                 width={40}
                 height={40}
                 className='rounded-full bg-gray-10 h-10 w-10'
@@ -52,9 +56,9 @@ export default function CommentList({
               />
             </div>
             <div className='flex flex-col space-y-1 flex-1'>
-              <div>{comment?.user?.email}</div>
+              <div>{comment.user?.email}</div>
               <div className='text-xs'>
-                {new Date(comment?.createdAt)?.toLocaleDateString()}
+                {new Date(comment.createdAt).toLocaleDateString()}
               </div>
               <div className='text-black mt-1 text-base'>{comment.body}</div>
               {displayStore && comment.store && (

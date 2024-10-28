@@ -1,5 +1,4 @@
-'use client';
-
+/* eslint-disable @next/next/no-img-element */
 import { useSession } from 'next-auth/react';
 import CommentForm from './CommentForm';
 import { useQuery } from '@tanstack/react-query';
@@ -7,7 +6,7 @@ import axios from 'axios';
 import { CommentApiResponse } from '@/interface';
 import CommentList from './CommentList';
 import Pagination from '../Pagination';
-import { useSearchParams } from 'next/navigation'; // 쿼리 파라미터 처리
+import { useSearchParams } from 'next/navigation';
 
 interface CommentProps {
   storeId: number;
@@ -15,8 +14,8 @@ interface CommentProps {
 
 export default function Comments({ storeId }: CommentProps) {
   const { status } = useSession();
-  const searchParams = useSearchParams(); // 쿼리 파라미터 가져오기
-  const page = searchParams?.get('page') || '1'; // 쿼리 파라미터에서 페이지 가져오기
+  const searchParams = useSearchParams();
+  const page = searchParams?.get('page') || '1';
 
   const fetchComments = async () => {
     const { data } = await axios(
@@ -33,6 +32,8 @@ export default function Comments({ storeId }: CommentProps) {
   } = useQuery({
     queryKey: ['comments', storeId, page],
     queryFn: fetchComments,
+    enabled: !!storeId && !!page,
+    staleTime: 5000,
   });
 
   return (
@@ -45,7 +46,7 @@ export default function Comments({ storeId }: CommentProps) {
         <div>Loading...</div>
       ) : (
         <>
-          <CommentList comments={comments} />
+          <CommentList comments={comments} refetch={refetch} />
           <Pagination
             total={comments?.totalPage || 1}
             page={page}
