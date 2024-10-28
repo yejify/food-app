@@ -1,4 +1,6 @@
-import { useRouter } from 'next/navigation';
+'use client';
+
+import { useRouter, useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { StoreType } from '@/interface';
@@ -6,15 +8,15 @@ import Loader from '@/components/Loader';
 import Map from '@/components/Map';
 import Marker from '@/components/Marker';
 import { toast } from 'react-toastify';
-
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Like from '@/components/Like';
 import Comments from '@/components/comments';
 
-export default function StorePage({ params }: { params: { id: string } }) {
+export default function StorePage() {
   const router = useRouter();
-  const id = params.id;
+  const params = useParams();
+  const id = params?.id as string;
   const { status } = useSession();
 
   const fetchStore = async () => {
@@ -36,11 +38,9 @@ export default function StorePage({ params }: { params: { id: string } }) {
 
   const handleDelete = async () => {
     const confirm = window.confirm('해당 가게를 삭제하시겠습니까?');
-
     if (confirm && store) {
       try {
-        const result = await axios.delete(`/api/stores?id=${store?.id}`);
-
+        const result = await axios.delete(`/api/stores?id=${store.id}`);
         if (result.status === 200) {
           toast.success('가게를 삭제했습니다.');
           router.replace('/');
@@ -48,7 +48,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
           toast.error('다시 시도해주세요.');
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
         toast.error('다시 시도해주세요.');
       }
     }
@@ -80,10 +80,10 @@ export default function StorePage({ params }: { params: { id: string } }) {
           </div>
           {status === 'authenticated' && store && (
             <div className='flex items-center gap-4 px-4 py-3'>
-              {<Like storeId={store.id} />}
+              <Like storeId={store.id} />
               <Link
+                href={`/stores/${store.id}/edit`}
                 className='underline hover:text-gray-400 text-sm'
-                href={`/stores/${store?.id}/edit`}
               >
                 수정
               </Link>
@@ -100,69 +100,39 @@ export default function StorePage({ params }: { params: { id: string } }) {
 
         <div className='mt-6 border-t border-gray-100'>
           <dl className='divide-y divide-gray-100'>
-            <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                카테고리
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
-                {store?.category}
-              </dd>
-            </div>
-            <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                주소
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
-                {store?.address}
-              </dd>
-            </div>
-            <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                위도
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
-                {store?.lat}
-              </dd>
-            </div>
-            <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                경도
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
-                {store?.lng}
-              </dd>
-            </div>
-            <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                연락처
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
-                {store?.phone}
-              </dd>
-            </div>
-            <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                식품인증구분
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
-                {store?.foodCertifyName}
-              </dd>
-            </div>
-            <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                업종명
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
-                {store?.storeType}
-              </dd>
-            </div>
+            {[
+              { label: '카테고리', value: store?.category },
+              { label: '주소', value: store?.address },
+              { label: '위도', value: store?.lat },
+              { label: '경도', value: store?.lng },
+              { label: '연락처', value: store?.phone },
+              { label: '식품인증구분', value: store?.foodCertifyName },
+              { label: '업종명', value: store?.storeType },
+            ].map(({ label, value }) => (
+              <div
+                key={label}
+                className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'
+              >
+                <dt className='text-sm font-medium leading-6 text-gray-900'>
+                  {label}
+                </dt>
+                <dd className='mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0'>
+                  {value || '정보 없음'}
+                </dd>
+              </div>
+            ))}
           </dl>
         </div>
       </div>
+
       {isSuccess && (
         <>
           <div className='overflow-hidden w-full mb-20 max-w-5xl mx-auto max-h-[600px]'>
-            <Map lat={store?.lat} lng={store?.lng} zoom={1} />
+            <Map
+              lat={store?.lat ?? 37.497625203}
+              lng={store?.lng ?? 127.03088379}
+              zoom={1}
+            />
             <Marker store={store} />
           </div>
           <Comments storeId={store.id} />

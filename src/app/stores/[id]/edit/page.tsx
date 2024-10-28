@@ -5,15 +5,15 @@ import AddressSearch from '@/components/AddressSearch';
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import { StoreType } from '@/interface';
 import axios from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 export default function StoreEditPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = searchParams?.get('id');
+  const params = useParams();
+  const id = params?.id as string;
 
   const fetchStore = async () => {
     const { data } = await axios(`/api/stores?id=${id}`);
@@ -38,7 +38,6 @@ export default function StoreEditPage() {
     refetchOnWindowFocus: false,
   });
 
-  // useEffect를 사용해 데이터가 성공적으로 로드되면 폼 값을 설정합니다.
   useEffect(() => {
     if (store) {
       setValue('id', store.id);
