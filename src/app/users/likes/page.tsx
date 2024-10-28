@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Loading from '@/components/Loading';
 import StoreList from '@/components/StoreList';
 import { LikeApiResponse, LikeInterface } from '@/interface';
@@ -8,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import Pagination from '@/components/Pagination';
 
-export default function LikesPage() {
+function LikesContent() {
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
 
@@ -22,8 +23,10 @@ export default function LikesPage() {
     isError,
     isLoading,
   } = useQuery({
-    queryKey: [`likes-${page}`],
+    queryKey: ['likes', page],
     queryFn: fetchLikes,
+    placeholderData: (previousData) => previousData,
+    staleTime: 5000,
   });
 
   if (isError) {
@@ -53,5 +56,13 @@ export default function LikesPage() {
         pathname='/users/likes'
       />
     </div>
+  );
+}
+
+export default function LikesPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <LikesContent />
+    </Suspense>
   );
 }

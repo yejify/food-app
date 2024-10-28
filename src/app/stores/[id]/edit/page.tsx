@@ -27,12 +27,7 @@ export default function StoreEditPage() {
     setValue,
   } = useForm<StoreType>();
 
-  const {
-    data: store,
-    isFetching,
-    isSuccess,
-    isError,
-  } = useQuery({
+  const { data: store } = useQuery({
     queryKey: [`store-${id}`],
     queryFn: fetchStore,
     refetchOnWindowFocus: false,

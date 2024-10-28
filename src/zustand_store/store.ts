@@ -1,9 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand';
-import { SearchType, StoreType } from '@/interface';
-
-const DEFAULT_LAT = 37.497625203;
-const DEFAULT_LNG = 127.03088379;
-const DEFAULT_ZOOM = 3;
+import { StoreType } from '@/interface';
 
 // Map 상태 정의
 interface MapState {

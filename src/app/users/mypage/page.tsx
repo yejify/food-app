@@ -1,6 +1,6 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
+import { Suspense } from 'react';
 import Pagination from '@/components/Pagination';
 import CommentList from '@/components/comments/CommentList';
 import { CommentApiResponse } from '@/interface';
@@ -8,8 +8,9 @@ import axios from 'axios';
 import { useSession, signOut } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import Loading from '@/components/Loading'; // Add a loading fallback
 
-export default function MyPage() {
+function MyPageContent() {
   const searchParams = useSearchParams();
   const page = searchParams?.get('page') || '1';
 
@@ -20,7 +21,7 @@ export default function MyPage() {
     return data as CommentApiResponse;
   };
 
-  const { data: comments, refetch } = useQuery({
+  const { data: comments } = useQuery({
     queryKey: [`comments-${page}`],
     queryFn: fetchComments,
   });
@@ -29,6 +30,7 @@ export default function MyPage() {
 
   return (
     <div className='md:max-w-5xl mx-auto px-4 py-8'>
+      {/* User Information */}
       <div className='px-4 sm:px-0'>
         <h3 className='text-base font-semibold leading-7 text-gray-900'>
           마이페이지
@@ -85,6 +87,8 @@ export default function MyPage() {
           </div>
         </dl>
       </div>
+
+      {/* Comments */}
       <div className='mt-8 px-4 sm:px-0'>
         <h3 className='text-base font-semibold leading-7 text-gray-900'>
           내가 쓴 댓글
@@ -93,12 +97,20 @@ export default function MyPage() {
           댓글 리스트
         </p>
       </div>
-      <CommentList comments={comments} displayStore={true} />
+      <CommentList comments={comments} displayStore={true} refetch={() => {}} />
       <Pagination
         total={comments?.totalPage}
         page={page}
         pathname='/users/mypage'
       />
     </div>
+  );
+}
+
+export default function MyPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <MyPageContent />
+    </Suspense>
   );
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useLocationStore, useMapStore } from '@/zustand_store/store';

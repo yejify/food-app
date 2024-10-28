@@ -1,8 +1,7 @@
 import { useState } from 'react';
-
 import { StoreType } from '@/interface';
 import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import DaumPostcodeEmbed from 'react-daum-postcode';
+import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 
 interface AddressProps {
   setValue: UseFormSetValue<StoreType>;
@@ -17,24 +16,27 @@ export default function AddressSearch({
 }: AddressProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const handleComplete = (data: any) => {
+  // Address 타입 사용
+  const handleComplete = (data: Address) => {
     let fullAddress = data.address;
     let extraAddress = '';
 
     if (data.addressType === 'R') {
-      if (data.bname !== '') {
+      if (data.bname) {
         extraAddress += data.bname;
       }
-      if (data.buildingName !== '') {
-        extraAddress +=
-          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      if (data.buildingName) {
+        extraAddress += extraAddress
+          ? `, ${data.buildingName}`
+          : data.buildingName;
       }
-      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+      fullAddress += extraAddress ? ` (${extraAddress})` : '';
     }
 
     setValue('address', fullAddress);
     setIsOpen(false);
   };
+
   return (
     <>
       <div className='col-span-full'>
