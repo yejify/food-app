@@ -6,7 +6,22 @@
 주요 기능 설명
 
 ## 기술 스택
-기술 스택 설명
+| **카테고리**             | **기술**                                       |
+|--------------------------|------------------------------------------------|
+| **프론트엔드 라이브러리** | React, React-DOM                               |
+| **상태 관리**            | Zustand                                        |
+| **API 통신**             | Axios                                          |
+| **폼 관리**              | React Hook Form                                |
+| **데이터 캐싱**          | TanStack React Query, React Query Devtools     |
+| **인증**                 | Next-Auth, @auth/prisma-adapter                |
+| **아이콘**               | React Icons                                    |
+| **주소 검색**            | React Daum Postcode                            |
+| **알림**                 | React Toastify                                 |
+| **스타일링**             | Tailwind CSS, Autoprefixer                     |
+| **빌드 및 개발 도구**    | Next.js, TypeScript, ESLint, PostCSS           |
+| **데이터베이스**         | Prisma, @prisma/client                         |
+| **시드 데이터**          | ts-node                                        |
+
 
 ## 구현 페이지
 구현 페이지 설명
