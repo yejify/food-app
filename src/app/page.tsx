@@ -1,13 +1,12 @@
 import Map from '@/components/Map';
 import Markers from '@/components/Markers';
-
 import StoreBox from '@/components/StoreBox';
 import { StoreType } from '@/interface';
-
 import CurrentLocationButton from '@/components/CurrentLocationButton';
 
 export default async function Home() {
-  const stores: StoreType[] = await getData();
+  const stores: StoreType[] = await getData(); // 서버에서 데이터 가져오기
+
   return (
     <>
       <Map />
@@ -18,7 +17,7 @@ export default async function Home() {
   );
 }
 
-export async function getData(): Promise<StoreType[]> {
+async function getData(): Promise<StoreType[]> {
   try {
     const res = await fetch(
       `https://food-app-lilac-seven.vercel.app/api/stores`,
