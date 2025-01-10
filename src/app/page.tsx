@@ -18,11 +18,19 @@ export default async function Home() {
   );
 }
 
-async function getData(): Promise<StoreType[]> {
+export async function getData(): Promise<StoreType[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`, {
-      cache: 'no-store',
-    });
+    const res = await fetch(
+      `https://food-app-lilac-seven.vercel.app/api/stores`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Origin: 'https://food-app-lilac-seven.vercel.app',
+        },
+        cache: 'no-store',
+      }
+    );
 
     if (!res.ok) {
       throw new Error('Failed to fetch data');
