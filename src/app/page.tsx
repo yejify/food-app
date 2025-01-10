@@ -26,7 +26,6 @@ export async function getData(): Promise<StoreType[]> {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Origin: 'https://food-app-lilac-seven.vercel.app',
         },
         cache: 'no-store',
       }
