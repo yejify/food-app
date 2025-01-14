@@ -107,7 +107,6 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  // 데이터 수정을 처리한다
   const formData = await req.json();
   const headers = {
     Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
@@ -120,9 +119,19 @@ export async function PUT(req: Request) {
     { headers }
   );
 
+  const lat = parseFloat(data.documents[0].y);
+  const lng = parseFloat(data.documents[0].x);
+
+  if (isNaN(lat) || isNaN(lng)) {
+    return NextResponse.json(
+      { error: '유효하지 않은 좌표값입니다.' },
+      { status: 400 }
+    );
+  }
+
   const result = await prisma.store.update({
     where: { id: formData.id },
-    data: { ...formData, lat: data.documents[0].y, lng: data.documents[0].x },
+    data: { ...formData, lat, lng },
   });
 
   return NextResponse.json(result, {
