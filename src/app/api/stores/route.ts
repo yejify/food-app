@@ -65,18 +65,45 @@ export async function POST(req: Request) {
     Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
   };
 
-  const { data } = await axios.get(
-    `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURI(
-      formData.address
-    )}`,
-    { headers }
-  );
+  try {
+    const { data } = await axios.get(
+      `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURI(
+        formData.address
+      )}`,
+      { headers }
+    );
 
-  const result = await prisma.store.create({
-    data: { ...formData, lat: data.documents[0].y, lng: data.documents[0].x },
-  });
+    if (!data.documents || data.documents.length === 0) {
+      return NextResponse.json(
+        { error: '주소에 해당하는 위치 정보를 찾을 수 없습니다.' },
+        { status: 400 }
+      );
+    }
 
-  return NextResponse.json(result, { status: 200 });
+    // lat와 lng를 Float으로 변환
+    const lat = parseFloat(data.documents[0].y);
+    const lng = parseFloat(data.documents[0].x);
+
+    if (isNaN(lat) || isNaN(lng)) {
+      return NextResponse.json(
+        { error: '유효하지 않은 좌표값입니다.' },
+        { status: 400 }
+      );
+    }
+
+    // Prisma를 통해 데이터 생성
+    const result = await prisma.store.create({
+      data: { ...formData, lat, lng },
+    });
+
+    return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: '주소 검색 중 문제가 발생했습니다.' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(req: Request) {
