@@ -36,7 +36,7 @@ export default function Like({ storeId, className }: LikeProps) {
 
         if (like.status === 201) {
           toast.success('가게를 찜했습니다.');
-        } else {
+        } else if (like.status === 204) {
           toast.warn('찜을 취소했습니다.');
         }
 

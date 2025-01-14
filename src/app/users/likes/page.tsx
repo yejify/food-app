@@ -45,8 +45,8 @@ function LikesContent() {
         {isLoading ? (
           <Loading />
         ) : (
-          likes?.data?.map((like: LikeInterface, index) => (
-            <StoreList i={index} store={like.store} key={index} />
+          likes?.data?.map((like: LikeInterface) => (
+            <StoreList i={like.id} store={like.store} key={like.id} />
           ))
         )}
       </ul>
