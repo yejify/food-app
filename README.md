@@ -1,5 +1,7 @@
 # Food-App
 
+<img width="1085" alt="스크린샷 2025-01-16 오후 8 41 39" src="https://github.com/user-attachments/assets/a923faca-e23a-4bb2-b95a-8ca5f23a7eb7" />
+
 카카오 지도 API를 사용해 자신만의 맛집을 등록하고 관리할 수 있는 웹 사이트입니다. 다른 사람이 등록한 맛집도 좋아요 기능을 통해 마이페이지에서 관리할 수 있습니다. 댓글을 통해 유저간 소통이 가능하며 현재 위치를 중심으로 탐색이 가능한 서비스를 제공합니다.
 
 [Food-App](https://food-app-lilac-seven.vercel.app/)
@@ -54,7 +56,21 @@
 
 ## 구현 페이지
 
-구현 페이지 설명
+#### 로그인
+![food-app_login](https://github.com/user-attachments/assets/26e1f827-2438-485e-a4a1-b9a8177a07e8)
+
+#### 좋아요 기능
+![food-app_like](https://github.com/user-attachments/assets/ac2c8de2-1d49-44a9-9476-86fe20453b49)
+
+#### 스토어 리스트, 상세
+![food-app_stroreList](https://github.com/user-attachments/assets/d7d4d3a8-8627-45b2-b638-46b433a5a822)
+![food-app_store](https://github.com/user-attachments/assets/72bd0042-a89f-4f09-9c57-7514450d830d)
+
+#### 가게 등록, 수정, 삭제
+![food-app_storeCUD](https://github.com/user-attachments/assets/0d10b595-7533-4219-9264-6aae05438515)
+
+#### 마이페이지
+![food-app_myPage](https://github.com/user-attachments/assets/04a5d9b9-9b5d-4b5c-b683-cd9c433fa804)
 
 ## 트러블슈팅
 
